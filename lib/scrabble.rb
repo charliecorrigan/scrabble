@@ -1,7 +1,17 @@
+require 'pry'
 class Scrabble
 
   def score(word)
-    1
+  #   point = word.upcase.split("").inject do |sum, letter|
+  #     sum + point_values[letter]
+  #     binding.pry
+  #   end
+  # point
+    letters = word.upcase.split("")
+    letters
+    letters.inject(0) do |sum, letter|
+      sum + point_values[letter]
+    end
   end
 
   def point_values
