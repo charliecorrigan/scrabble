@@ -1,36 +1,36 @@
 class WordFinder
   
-  def words
+ def words
     File.read('/usr/share/dict/words').split("\n")
   end
   
-  def letters_combinations(letters)
-    all_combinations = []
-    (1..letters.length).map do |num|
-      combination = letters.combination(num).to_a
-      all_combinations.push(*combination)
-    end
-    all_combinations.map do |combinations|
-      combinations.join
+  def is_in_dictionary?(letter_combination, dictionary)
+    dictionary.any? do |word|
+      word == letter_combination
     end
   end
 
-  def for_letters(letters)
-    all_combinations = letters_combinations(letters)
-    words_included = all_combinations.map do |combination|
-      is_a_word = words.any? do |word|
-        word == combination
+  def assemble_all_combinations(available_letters)
+    combinations = (1..available_letters.length).map do |number|
+      combo_set = available_letters.permutation(number).to_a.map do |combo|
+        combo.join
       end
-    if is_a_word
-      combination
     end
-  end
-  words_included.compact
+    all_combinations = combinations.join(", ")
+    all_combinations.split(", ")
   end
 
-  def check_words_for_combination(combination)
-    words.any? do |word|
-      word == combination
+  def for_letters(available_letters)
+    dictionary = words
+    all_combinations = assemble_all_combinations(available_letters)
+    possible_words = all_combinations.map do |letter_combination|
+      if is_in_dictionary?(letter_combination, dictionary)
+        letter_combination
+      else
+        next
+      end
     end
+    possible_words.compact.sort
   end
+
 end
